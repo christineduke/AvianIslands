@@ -1,0 +1,1099 @@
+# stupid bullshit fix
+
+setwd("C:/Users/chris/OneDrive/Documents/School/Current Courses/REN R 401/3. Assemblage Data - Full/laclaronge_avian-main/laclaronge_avian-main/data2")
+load("LLR.Data.RData")
+
+library(tidyverse)
+library(tidyr)
+library(vegan)
+library(dplyr)
+library(ggplot2)
+
+dat <- read.csv("n_pres.csv")
+attach(dat)
+View(dat)
+
+dat2 <- spread(dat, species_code, n, fill=0)
+dat2
+
+dat2 <- subset(dat2, select= -pres)
+dat2
+
+
+
+# now stats? fuck i am INCOMPETENT
+
+dat <- read.csv("sp.count.islandid.csv")
+dat <- subset(dat, select = -X)
+View(dat)
+attach(dat)
+
+
+
+
+# NOW i can do shit for fucks sake
+
+
+dat %>%
+  group_by(island_id) %>%
+  summarise(across(ALFL:YBFL, mean, na.rm = TRUE))
+
+BB <- colSums(dat[1,2:38])
+sum(BB)
+BC <- colSums(dat[2,2:38])
+sum(BC)
+BS <- colSums(dat[3,2:38])
+sum(BS)
+BT <- colSums(dat[4,2:38])
+sum(BT)
+CC <- colSums(dat[5,2:38])
+sum(CC)
+CD <- colSums(dat[6,2:38])
+sum(CD)
+CG <- colSums(dat[7,2:38])
+sum(CG)
+DF <- colSums(dat[8,2:38])
+sum(DF)
+DS <- colSums(dat[9,2:38])
+sum(DS)
+EB <- colSums(dat[10,2:38])
+sum(EB)
+EI <- colSums(dat[11,2:38])
+sum(EI)
+EL <- colSums(dat[12,2:38])
+sum(EL)
+FD <- colSums(dat[13,2:38])
+sum(FD)
+HI <- colSums(dat[14,2:38])
+sum(HI)
+IL <- colSums(dat[15,2:38])
+sum(IL)
+IS <- colSums(dat[16,2:38])
+sum(IS)
+KA <- colSums(dat[17,2:38])
+sum(KA)
+KC <- colSums(dat[18,2:38])
+sum(KC)
+KP <- colSums(dat[19,2:38])
+sum(KP)
+KR <- colSums(dat[20,2:38])
+sum(KR)
+LQ <- colSums(dat[21,2:38])
+sum(LQ)
+MN <- colSums(dat[22,2:38])
+sum(MN)
+MT <- colSums(dat[23,2:38])
+sum(MT)
+NH <- colSums(dat[24,2:38])
+sum(NH)
+NV <- colSums(dat[25,2:38])
+sum(NV)
+NW <- colSums(dat[26,2:38])
+sum(NW)
+OS <- colSums(dat[27,2:38])
+sum(OS)
+PP <- colSums(dat[28,2:38])
+sum(PP)
+PR <- colSums(dat[29,2:38])
+sum(PR)
+QC <- colSums(dat[30,2:38])
+sum(QC)
+SF <- colSums(dat[31,2:38])
+sum(SF)
+SG <- colSums(dat[32,2:38])
+sum(SG)
+SK <- colSums(dat[33,2:38])
+sum(SK)
+TB <- colSums(dat[34,2:38])
+sum(TB)
+WD <- colSums(dat[35,2:38])
+sum(WD)
+WF <- colSums(dat[36,2:38])
+sum(WF)
+
+nsamp=c(1:2)
+R.BB=rarefy(BB, nsamp)
+R.BC=rarefy(BC, nsamp)
+R.BS=rarefy(BS, nsamp)
+R.BT=rarefy(BT, nsamp)
+R.CC=rarefy(CC, nsamp)
+R.CD=rarefy(CD, nsamp)
+R.CG=rarefy(CG, nsamp)
+R.DF=rarefy(DF, nsamp)
+R.DS=rarefy(DS, nsamp)
+R.EB=rarefy(EB, nsamp)
+R.EI=rarefy(EI, nsamp)        
+R.EL=rarefy(EL, nsamp)
+R.FD=rarefy(FD, nsamp)
+R.HI=rarefy(HI, nsamp)
+R.IL=rarefy(IL, nsamp)
+R.IS=rarefy(IS, nsamp)
+R.KA=rarefy(KA, nsamp)
+R.KC=rarefy(KC, nsamp)
+R.KP=rarefy(KP, nsamp)
+R.KR=rarefy(KR, nsamp)
+R.LQ=rarefy(LQ, nsamp)
+R.MN=rarefy(MN, nsamp)
+R.MT=rarefy(MT, nsamp)
+R.NH=rarefy(NH, nsamp)
+R.NV=rarefy(NV, nsamp)
+R.NW=rarefy(NW, nsamp)
+R.OS=rarefy(OS, nsamp)
+R.PP=rarefy(PP, nsamp)
+R.PR=rarefy(PR, nsamp)
+R.QC=rarefy(QC, nsamp)
+R.SF=rarefy(SF, nsamp)
+R.SG=rarefy(SG, nsamp)
+R.SK=rarefy(SK, nsamp)
+R.TB=rarefy(TB, nsamp)
+R.WD=rarefy(WD, nsamp)
+R.WF=rarefy(WF, nsamp)
+
+
+richness.islands <- t(as.data.frame(rbind(R.BB,R.BC,R.BS,R.BT,R.CC,R.CD,R.CG,R.DF,R.DS,
+                                          R.EB,R.EI,R.EL,R.FD,R.HI,R.IL,R.IS,R.KA,R.KC,
+                                          R.KP,R.KR,R.LQ,R.MN,R.MT,R.NH,R.NV,R.NW,R.OS,
+                                          R.PP,R.PR,R.QC,R.SF,R.SG,R.SK,R.TB,R.WD,R.WF,
+                                          nsamp),
+                                    row.names = c("BB","BC","BS","BT","CC","CD","CG",
+                                                  "DF","DS","EB","EI","EL","FD","HI",
+                                                  "IL","IS","KA","KC","KP","KR","LQ",
+                                                  "MN","MT","NH","NV","NW","OS","PP",
+                                                  "PR","QC","SF","SG","SK","TB","WD",
+                                                  "WF","sample")))
+
+richness.islands.2 <- as.data.frame(richness.islands)
+View(richness.islands.2)
+Colrich <- as.data.frame(t(richness.islands.2))
+View(Colrich)
+
+library(cowplot)
+richness.raref <- ggplot(richness.islands.2, aes(x=sample))+
+  geom_point(aes(y=R.BB))+
+  geom_point(aes(y=R.BC))+
+  geom_point(aes(y=R.BS))+
+  geom_point(aes(y=R.BT))+
+  geom_point(aes(y=R.CC))+
+  geom_point(aes(y=R.CD))+
+  geom_point(aes(y=R.CG))+
+  geom_point(aes(y=R.DF))+
+  geom_point(aes(y=R.DS))+
+  geom_point(aes(y=R.EB))+
+  geom_point(aes(y=R.EI))+
+  geom_point(aes(y=R.EL))+
+  geom_point(aes(y=R.FD))+
+  geom_point(aes(y=R.HI))+
+  geom_point(aes(y=R.IL))+
+  geom_point(aes(y=R.IS))+
+  geom_point(aes(y=R.KA))+
+  geom_point(aes(y=R.KC))+
+  geom_point(aes(y=R.KP))+
+  geom_point(aes(y=R.KR))+
+  geom_point(aes(y=R.LQ))+
+  geom_point(aes(y=R.MN))+
+  geom_point(aes(y=R.MT))+
+  geom_point(aes(y=R.NH))+
+  geom_point(aes(y=R.NV))+
+  geom_point(aes(y=R.NW))+
+  geom_point(aes(y=R.OS))+
+  geom_point(aes(y=R.PP))+
+  geom_point(aes(y=R.PR))+
+  geom_point(aes(y=R.QC))+
+  geom_point(aes(y=R.SF))+
+  geom_point(aes(y=R.SG))+
+  geom_point(aes(y=R.SK))+
+  geom_point(aes(y=R.TB))+
+  geom_point(aes(y=R.WD))+
+  geom_point(aes(y=R.WF))+
+  geom_line(aes(y=R.BB))+
+  geom_line(aes(y=R.BC))+
+  geom_line(aes(y=R.BS))+
+  geom_line(aes(y=R.BT))+
+  geom_line(aes(y=R.CC))+
+  geom_line(aes(y=R.CD))+
+  geom_line(aes(y=R.CG))+
+  geom_line(aes(y=R.DF))+
+  geom_line(aes(y=R.DS))+
+  geom_line(aes(y=R.EB))+
+  geom_line(aes(y=R.EI))+
+  geom_line(aes(y=R.EL))+
+  geom_line(aes(y=R.FD))+
+  geom_line(aes(y=R.HI))+
+  geom_line(aes(y=R.IL))+
+  geom_line(aes(y=R.IS))+
+  geom_line(aes(y=R.KA))+
+  geom_line(aes(y=R.KC))+
+  geom_line(aes(y=R.KP))+
+  geom_line(aes(y=R.KR))+
+  geom_line(aes(y=R.LQ))+
+  geom_line(aes(y=R.MN))+
+  geom_line(aes(y=R.MT))+
+  geom_line(aes(y=R.NH))+
+  geom_line(aes(y=R.NV))+
+  geom_line(aes(y=R.NW))+
+  geom_line(aes(y=R.OS))+
+  geom_line(aes(y=R.PP))+
+  geom_line(aes(y=R.PR))+
+  geom_line(aes(y=R.QC))+
+  geom_line(aes(y=R.SF))+
+  geom_line(aes(y=R.SG))+
+  geom_line(aes(y=R.SK))+
+  geom_line(aes(y=R.TB))+
+  geom_line(aes(y=R.WD))+
+  geom_line(aes(y=R.WF))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves for Islands")
+plot_grid(richness.raref, ncol=1)
+
+
+
+# Hill Numbers
+
+H.BB <- renyi(BB, scales=c(0,1,2), hill = TRUE)
+H.BC <- renyi(BC, scales=c(0,1,2), hill = TRUE)
+H.BS <- renyi(BS, scales=c(0,1,2), hill = TRUE)
+H.BT <- renyi(BT, scales=c(0,1,2), hill = TRUE)
+H.CC <- renyi(CC, scales=c(0,1,2), hill = TRUE)
+H.CD <- renyi(CD, scales=c(0,1,2), hill = TRUE)
+H.CG <- renyi(CG, scales=c(0,1,2), hill = TRUE)
+H.DF <- renyi(DF, scales=c(0,1,2), hill = TRUE)
+H.DS <- renyi(DS, scales=c(0,1,2), hill = TRUE)
+H.EB <- renyi(EB, scales=c(0,1,2), hill = TRUE)
+H.EI <- renyi(EI, scales=c(0,1,2), hill = TRUE)
+H.EL <- renyi(EL, scales=c(0,1,2), hill = TRUE)
+H.FD <- renyi(FD, scales=c(0,1,2), hill = TRUE)
+H.HI <- renyi(HI, scales=c(0,1,2), hill = TRUE)
+H.IL <- renyi(IL, scales=c(0,1,2), hill = TRUE)
+H.IS <- renyi(IS, scales=c(0,1,2), hill = TRUE)
+H.KA <- renyi(KA, scales=c(0,1,2), hill = TRUE)
+H.KC <- renyi(KC, scales=c(0,1,2), hill = TRUE)
+H.KP <- renyi(KP, scales=c(0,1,2), hill = TRUE)
+H.KR <- renyi(KR, scales=c(0,1,2), hill = TRUE)
+H.LQ <- renyi(LQ, scales=c(0,1,2), hill = TRUE)
+H.MN <- renyi(MN, scales=c(0,1,2), hill = TRUE)
+H.MT <- renyi(MT, scales=c(0,1,2), hill = TRUE)
+H.NH <- renyi(NH, scales=c(0,1,2), hill = TRUE)
+H.NV <- renyi(NV, scales=c(0,1,2), hill = TRUE)
+H.NW <- renyi(NW, scales=c(0,1,2), hill = TRUE)
+H.OS <- renyi(OS, scales=c(0,1,2), hill = TRUE)
+H.PP <- renyi(PP, scales=c(0,1,2), hill = TRUE)
+H.PR <- renyi(PR, scales=c(0,1,2), hill = TRUE)
+H.QC <- renyi(QC, scales=c(0,1,2), hill = TRUE)
+H.SF <- renyi(SF, scales=c(0,1,2), hill = TRUE)
+H.SG <- renyi(SG, scales=c(0,1,2), hill = TRUE)
+H.SK <- renyi(SK, scales=c(0,1,2), hill = TRUE)
+H.TB <- renyi(TB, scales=c(0,1,2), hill = TRUE)
+H.WD <- renyi(WD, scales=c(0,1,2), hill = TRUE)
+H.WF <- renyi(WF, scales=c(0,1,2), hill = TRUE)
+
+
+diver.islands <- rbind.data.frame(H.BB,H.BC,H.BS,H.BT,H.CC,H.CD,H.CG,H.DF,H.DS,
+                                  H.EB,H.EI,H.EL,H.FD,H.HI,H.IL,H.IS,H.KA,H.KC,
+                                  H.KP,H.KR,H.LQ,H.MN,H.MT,H.NH,H.NV,H.NW,H.OS,
+                                  H.PP,H.PR,H.QC,H.SF,H.SG,H.SK,H.TB,H.WD,H.WF)
+rownames(diver.islands) <- c("BB","BC","BS","BT","CC","CD","CG","DF","DS","EB",
+                             "EI","EL","FD","HI","IL","IS","KA","KC","KP","KR",
+                             "LQ","MN","MT","NH","NV","NW","OS","PP","PR","QC",
+                             "SF","SG","SK","TB","WD","WF")
+colnames(diver.islands) <- c("Species Richness","Shannon Hill", "Simpson Hill")
+View(diver.islands)
+
+
+# Bring it back now y'all
+
+dat2 <- read.csv("island_diversity_values.csv")
+View(dat2)
+head(dat2)
+attach(dat2)
+
+# Redo rarefaction plotting based on natural breaks
+
+# Time Since Fire
+
+a.fire.dat <- dat2 %>% 
+  filter(Time.Since.Fire %in% (0:50))
+View(a.fire.dat)
+
+sum(BB);sum(BT);sum(DF);sum(EB);sum(FD);sum(HI);sum(IL);sum(IS);sum(KP);sum(KR);sum(MN)
+sum(NH);sum(OS);sum(PP);sum(PR);sum(SF);sum(SK);sum(WD);sum(WF)
+
+a.fire.rich <- t(as.data.frame(rbind(R.BB,R.BT,R.DF,R.EB,R.FD,R.HI,R.IL,R.IS,R.KP,R.KR,
+                                     R.MN,R.NH,R.OS,R.PP,R.PR,R.SF,R.SK,R.WD,R.WF,
+                                          nsamp),
+                                    row.names = c("BB","BT","DF","EB","FD","HI","IL",
+                                                  "IS","KP","KR","MN","NH","OS","PP",
+                                                  "PR","SF","SK","WD","WF","sample")))
+a.fire.rich.2 <- as.data.frame(a.fire.rich)
+View(a.fire.rich.2)
+
+
+a.fire <- ggplot(a.fire.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BB))+
+  geom_point(aes(y=R.BT))+
+  geom_point(aes(y=R.DF))+
+  geom_point(aes(y=R.EB))+
+  geom_point(aes(y=R.FD))+
+  geom_point(aes(y=R.HI))+
+  geom_point(aes(y=R.IL))+
+  geom_point(aes(y=R.IS))+
+  geom_point(aes(y=R.KP))+
+  geom_point(aes(y=R.KR))+
+  geom_point(aes(y=R.MN))+
+  geom_point(aes(y=R.NH))+
+  geom_point(aes(y=R.OS))+
+  geom_point(aes(y=R.PP))+
+  geom_point(aes(y=R.PR))+
+  geom_point(aes(y=R.SF))+
+  geom_point(aes(y=R.SK))+
+  geom_point(aes(y=R.WD))+
+  geom_point(aes(y=R.WF))+
+  geom_line(aes(y=R.BB))+
+  geom_line(aes(y=R.BT))+
+  geom_line(aes(y=R.DF))+
+  geom_line(aes(y=R.EB))+
+  geom_line(aes(y=R.FD))+
+  geom_line(aes(y=R.HI))+
+  geom_line(aes(y=R.IL))+
+  geom_line(aes(y=R.IS))+
+  geom_line(aes(y=R.KP))+
+  geom_line(aes(y=R.KR))+
+  geom_line(aes(y=R.MN))+
+  geom_line(aes(y=R.NH))+
+  geom_line(aes(y=R.OS))+
+  geom_line(aes(y=R.PP))+
+  geom_line(aes(y=R.PR))+
+  geom_line(aes(y=R.SF))+
+  geom_line(aes(y=R.SK))+
+  geom_line(aes(y=R.WD))+
+  geom_line(aes(y=R.WF))+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Fire Subset A (0-50 years)")
+plot_grid(a.fire, ncol=1)
+
+
+
+
+
+
+
+
+b.fire.dat <- dat2 %>% 
+  filter(Time.Since.Fire %in% (51:100))
+View(b.fire.dat)
+
+nsamp2=c(1:3)
+R.BS.10=rarefy(BS, nsamp2)
+R.EI.10=rarefy(EI, nsamp2)
+R.KC.10=rarefy(KC, nsamp2)
+R.QC.10=rarefy(QC, nsamp2)
+R.TB.10=rarefy(TB, nsamp2)
+
+
+b.fire.rich <- t(as.data.frame(rbind(R.BS.10,R.EI.10,R.KC.10,R.QC.10,R.TB.10,nsamp2),
+                                    row.names = c("BS","EI","KC","QC","TB","sample")))
+b.fire.rich.2 <- as.data.frame(b.fire.rich)
+View(b.fire.rich.2)
+
+b.fire <- ggplot(b.fire.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BS.10))+
+  geom_point(aes(y=R.EI.10))+
+  geom_point(aes(y=R.KC.10))+
+  geom_point(aes(y=R.QC.10))+
+  geom_point(aes(y=R.TB.10))+
+  geom_line(aes(y=R.BS.10))+
+  geom_line(aes(y=R.EI.10))+
+  geom_line(aes(y=R.KC.10))+
+  geom_line(aes(y=R.QC.10))+
+  geom_line(aes(y=R.TB.10))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Fire Subset B (51-100 years)")
+plot_grid(b.fire, ncol=1)
+
+
+
+
+
+c.fire.dat <- dat2 %>% 
+  filter(Time.Since.Fire %in% (101:150))
+View(c.fire.dat)
+
+sum(CG);sum(EL);sum(KA);sum(MT);sum(NV);sum(NW)
+R.CG.2=rarefy(CG, nsamp2)
+R.EL.2=rarefy(EL, nsamp2)
+R.KA.2=rarefy(KA, nsamp2)
+R.MT.2=rarefy(MT, nsamp2)
+R.NV.2=rarefy(NV, nsamp2)
+R.NW.2=rarefy(NW, nsamp2)
+
+c.fire.rich <- t(as.data.frame(rbind(R.CG.2,R.EL.2,R.KA.2,R.MT.2,R.NV.2,R.NW.2,nsamp2),
+                               row.names = c("CG","EL","KA","MT","NV","NW","sample")))
+c.fire.rich.2 <- as.data.frame(c.fire.rich)
+View(c.fire.rich.2)
+
+c.fire <- ggplot(c.fire.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.CG.2))+
+  geom_point(aes(y=R.EL.2))+
+  geom_point(aes(y=R.KA.2))+
+  geom_point(aes(y=R.MT.2))+
+  geom_point(aes(y=R.NV.2))+
+  geom_point(aes(y=R.NW.2))+
+  geom_line(aes(y=R.CG.2))+
+  geom_line(aes(y=R.EL.2))+
+  geom_line(aes(y=R.KA.2))+
+  geom_line(aes(y=R.MT.2))+
+  geom_line(aes(y=R.NV.2))+
+  geom_line(aes(y=R.NW.2))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Fire Subset C (101-150 years")
+plot_grid(c.fire, ncol=1)
+
+
+
+
+d.fire.dat <- dat2 %>% 
+  filter(Time.Since.Fire %in% (151:200))
+View(d.fire.dat)
+
+nsamp3=c(1:12)
+R.CC.3=rarefy(CC, nsamp3)
+R.CD.3=rarefy(CD, nsamp3)
+R.DS.3=rarefy(DS, nsamp3)
+R.LQ.3=rarefy(LQ, nsamp3)
+
+d.fire.rich <- t(as.data.frame(rbind(R.CC.3,R.CD.3,R.DS.3,R.LQ.3,nsamp3),
+                               row.names = c("CC","CD","DS","LQ","sample")))
+d.fire.rich.2 <- as.data.frame(d.fire.rich)
+View(d.fire.rich.2)
+
+d.fire <- ggplot(d.fire.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.CC.3))+
+  geom_point(aes(y=R.CD.3))+
+  geom_point(aes(y=R.DS.3))+
+  geom_point(aes(y=R.LQ.3))+
+  geom_line(aes(y=R.CC.3))+
+  geom_line(aes(y=R.CD.3))+
+  geom_line(aes(y=R.DS.3))+
+  geom_line(aes(y=R.LQ.3))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves for Islands in Fire Subset D (151 - 200 years)")
+plot_grid(d.fire, ncol=1)
+
+
+
+e.fire.dat <- dat2 %>% 
+  filter(Time.Since.Fire %in% (201:250))
+View(e.fire.dat)
+
+nsamp4=c(1:14)
+R.BC.4=rarefy(BC, nsamp4)
+R.SG.4=rarefy(SG, nsamp4)
+
+e.fire.rich <- t(as.data.frame(rbind(R.BC.4,R.SG.4,nsamp4),
+                               row.names = c("BC","SG","sample")))
+e.fire.rich.2 <- as.data.frame(e.fire.rich)
+View(e.fire.rich.2)
+
+e.fire <- ggplot(e.fire.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BC.4))+
+  geom_point(aes(y=R.SG.4))+
+  geom_line(aes(y=R.BC.4))+
+  geom_line(aes(y=R.SG.4))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves for Islands in Fire Subset E (201 - 250 years)")
+plot_grid(e.fire, ncol=1)
+
+
+
+
+# Log scale island area - 0.0 - 0.5
+#                         0.51 - 1.0
+#                         1.01 - 1.5
+#                         1.51 - 2.0
+#                         2.01 - 2.5
+#                         2.51 - 3.0
+
+a.area.dat <- dat2 %>% 
+  filter(Area..log10. %in% (0:0.5))
+View(a.area.dat)
+
+nsamp5=c(1:5)
+R.BT.5=rarefy(BT, nsamp5)
+R.CG.5=rarefy(CG, nsamp5)
+R.MN.5=rarefy(MN, nsamp5)
+R.PR.5=rarefy(PR, nsamp5)
+
+
+a.area.rich <- t(as.data.frame(rbind(R.BT.5,R.CG.5,R.MN.5,R.PR.5,nsamp5),
+                               row.names = c("BT","CG","MN","PR","sample")))
+a.area.rich.2 <- as.data.frame(a.area.rich)
+View(a.area.rich.2)
+
+a.area <- ggplot(a.area.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BT.5))+
+  geom_point(aes(y=R.CG.5))+
+  geom_point(aes(y=R.MN.5))+
+  geom_point(aes(y=R.PR.5))+
+  geom_line(aes(y=R.BT.5))+
+  geom_line(aes(y=R.CG.5))+
+  geom_line(aes(y=R.MN.5))+
+  geom_line(aes(y=R.PR.5))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Area Subset A (0.0-0.5)")
+plot_grid(a.area, ncol=1)
+
+
+
+
+
+b.area.dat <- dat2 %>% 
+  filter(Area..log10. %in% (0.51:1.0))
+View(b.area.dat)
+
+b.area.rich <- t(as.data.frame(rbind(R.BB,R.CD,R.EI,R.IS,R.KA,R.KC,R.KP,R.KR,R.MT,
+                                     R.OS,R.SK,nsamp),
+                               row.names = c("BB","CD","EI","IS","KA","KC","KP","KR",
+                                             "MT","OS","SK","sample")))
+b.area.rich.2 <- as.data.frame(b.area.rich)
+View(b.area.rich.2)
+
+b.area <- ggplot(b.area.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BB))+
+  geom_point(aes(y=R.CD))+
+  geom_point(aes(y=R.EI))+
+  geom_point(aes(y=R.IS))+
+  geom_point(aes(y=R.KA))+
+  geom_point(aes(y=R.KC))+
+  geom_point(aes(y=R.KP))+
+  geom_point(aes(y=R.KR))+
+  geom_point(aes(y=R.MT))+
+  geom_point(aes(y=R.OS))+
+  geom_point(aes(y=R.SK))+
+  geom_line(aes(y=R.BB))+
+  geom_line(aes(y=R.CD))+
+  geom_line(aes(y=R.EI))+
+  geom_line(aes(y=R.IS))+
+  geom_line(aes(y=R.KA))+
+  geom_line(aes(y=R.KC))+
+  geom_line(aes(y=R.KP))+
+  geom_line(aes(y=R.KR))+
+  geom_line(aes(y=R.MT))+
+  geom_line(aes(y=R.OS))+
+  geom_line(aes(y=R.SK))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Area Subset B  (0.51-1.0)")
+plot_grid(b.area, ncol=1)
+
+
+
+
+
+
+
+c.area.dat <- dat2 %>% 
+  filter(Area..log10. %in% (1.01:1.5))
+View(c.area.dat)
+
+sum(BC);sum(CC);sum(EB);sum(EL);sum(IL);sum(LQ);sum(NH);sum(NV);sum(PP);sum(QC);sum(TB)
+
+nsamp2=c(1:3)
+R.BC.6=rarefy(BC, nsamp2)
+R.CC.6=rarefy(CC, nsamp2)
+R.EB.6=rarefy(EB, nsamp2)
+R.EL.6=rarefy(EL, nsamp2)
+R.IL.6=rarefy(IL, nsamp2)
+R.LQ.6=rarefy(LQ, nsamp2)
+R.NH.6=rarefy(NH, nsamp2)
+R.NV.6=rarefy(NV, nsamp2)
+R.PP.6=rarefy(PP, nsamp2)
+R.QC.6=rarefy(QC, nsamp2)
+R.TB.6=rarefy(TB, nsamp2)
+
+c.area.rich <- t(as.data.frame(rbind(R.BC.6,R.CC.6,R.EB.6,R.EL.6,R.IL.6,R.LQ.6,R.NH.6,
+                                     R.NV.6,R.PP.6,R.QC.6,R.TB.6,nsamp2),
+                               row.names = c("BC","CC","EB","EL","IL","LQ","NGH","NV",
+                                             "PP","QC","TB","sample")))
+c.area.rich.2 <- as.data.frame(c.area.rich)
+View(c.area.rich.2)
+
+c.area <- ggplot(c.area.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BC.6))+
+  geom_point(aes(y=R.CC.6))+
+  geom_point(aes(y=R.EB.6))+
+  geom_point(aes(y=R.EL.6))+
+  geom_point(aes(y=R.IL.6))+
+  geom_point(aes(y=R.LQ.6))+
+  geom_point(aes(y=R.NH.6))+
+  geom_point(aes(y=R.NV.6))+
+  geom_point(aes(y=R.PP.6))+
+  geom_point(aes(y=R.QC.6))+
+  geom_point(aes(y=R.PP.6))+
+  geom_line(aes(y=R.BC.6))+
+  geom_line(aes(y=R.CC.6))+
+  geom_line(aes(y=R.EB.6))+
+  geom_line(aes(y=R.EL.6))+
+  geom_line(aes(y=R.IL.6))+
+  geom_line(aes(y=R.LQ.6))+
+  geom_line(aes(y=R.NH.6))+
+  geom_line(aes(y=R.NV.6))+
+  geom_line(aes(y=R.PP.6))+
+  geom_line(aes(y=R.QC.6))+
+  geom_line(aes(y=R.PP.6))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Area Subset C (1.01-1.5)")
+plot_grid(c.area, ncol=1)
+
+
+
+
+
+d.area.dat <- dat2 %>% 
+  filter(Area..log10. %in% (1.51:2.0))
+View(d.area.dat)
+
+sum(DF);sum(FD);sum(HI);sum(NW);sum(SG);sum(WD);sum(WF)
+
+R.BS.9=rarefy(BS, nsamp)
+R.EI.9=rarefy(EI, nsamp)
+R.KC.9=rarefy(KC, nsamp)
+R.QC.9=rarefy(QC, nsamp)
+R.TB.9=rarefy(TB, nsamp)
+
+
+d.area.rich <- t(as.data.frame(rbind(R.BS.9,R.EI.9,R.KC.9,R.QC.9,R.TB.9,nsamp),
+                               row.names = c("BS","EI","KC","QC","TB","sample")))
+d.area.rich.2 <- as.data.frame(d.area.rich)
+View(d.area.rich.2)
+
+d.area <- ggplot(d.area.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BS.9))+
+  geom_point(aes(y=R.EI.9))+
+  geom_point(aes(y=R.KC.9))+
+  geom_point(aes(y=R.QC.9))+
+  geom_point(aes(y=R.TB.9))+
+  geom_line(aes(y=R.BS.9))+
+  geom_line(aes(y=R.EI.9))+
+  geom_line(aes(y=R.KC.9))+
+  geom_line(aes(y=R.QC.9))+
+  geom_line(aes(y=R.TB.9))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Area Subset D (1.51-2.0)")
+plot_grid(d.area, ncol=1)
+
+
+
+
+
+e.area.dat <- dat2 %>% 
+  filter(Area..log10. %in% (2.01:2.5))
+View(e.area.dat)
+
+sum(BS);sum(DS);sum(SF)
+
+nsamp6=c(1:22)
+R.BS.7=rarefy(BS, nsamp6)
+R.DS.7=rarefy(DS, nsamp6)
+R.SF.7=rarefy(SF, nsamp6)
+
+e.area.rich <- t(as.data.frame(rbind(R.BS.7,R.DS.7,R.SF.7,nsamp6),
+                               row.names = c("BS","DS","SF","sample")))
+e.area.rich.2 <- as.data.frame(e.area.rich)
+View(e.area.rich.2)
+
+e.area <- ggplot(e.area.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BS.7))+
+  geom_point(aes(y=R.DS.7))+
+  geom_point(aes(y=R.SF.7))+
+  geom_line(aes(y=R.BS.7))+
+  geom_line(aes(y=R.DS.7))+
+  geom_line(aes(y=R.SF.7))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Area Subset E (2.01-2.5)")
+plot_grid(e.area, ncol=1)
+
+
+# Log scale distance from mainland - 1.0 - 2.0
+#                                    2.01 - 2.5
+#                                    2.51 - 3.0
+#                                    3.01 - 4.0
+
+
+a.dist.dat <- dat2 %>% 
+  filter(Distance.from.Mainland..log10. %in% (1.0:2.0))
+View(a.dist.dat)
+
+sum(FD);sum(HI);sum(KR);sum(QC);sum(SK);sum(WD)
+# no new rarefy needed
+
+a.dist.rich <- t(as.data.frame(rbind(R.FD,R.HI,R.KR,R.QC,R.SK,R.WD,nsamp),
+                               row.names = c("FD","HI","KR","QC","SK","WD","sample")))
+a.dist.rich.2 <- as.data.frame(a.dist.rich)
+View(a.dist.rich.2)
+
+a.dist <- ggplot(a.dist.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.FD))+
+  geom_point(aes(y=R.HI))+
+  geom_point(aes(y=R.KR))+
+  geom_point(aes(y=R.QC))+
+  geom_point(aes(y=R.SK))+
+  geom_point(aes(y=R.WD))+
+  geom_line(aes(y=R.FD))+
+  geom_line(aes(y=R.HI))+
+  geom_line(aes(y=R.KR))+
+  geom_line(aes(y=R.QC))+
+  geom_line(aes(y=R.SK))+
+  geom_line(aes(y=R.WD))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Distance Subset A (1.0-2.0 km)")
+plot_grid(a.dist, ncol=1)
+
+
+
+
+
+
+
+
+
+b.dist.dat <- dat2 %>% 
+  filter(Distance.from.Mainland..log10. %in% (2.01:2.5))
+View(b.dist.dat)
+
+sum(BS);sum(CC);sum(CG);sum(DS);sum(EB);sum(EI);sum(KP);sum(MN);sum(NH);sum(OS);
+sum(PP);sum(PR);sum(SF)
+# no new rarefy needed 
+
+b.dist.rich <- t(as.data.frame(rbind(R.BS,R.CC,R.CG,R.DS,R.EB,R.EI,R.KP,R.MN,R.NH,
+                                     R.OS,R.PP,R.PR,R.SF,nsamp),
+                               row.names = c("BS","CC","CG","DS","EB","EI","KP","MN",
+                                             "NH","OS","PP","PR","SF","sample")))
+b.dist.rich.2 <- as.data.frame(b.dist.rich)
+View(b.dist.rich.2)
+
+b.dist <- ggplot(b.dist.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BS))+
+  geom_point(aes(y=R.CC))+
+  geom_point(aes(y=R.CG))+
+  geom_point(aes(y=R.DS))+
+  geom_point(aes(y=R.EB))+
+  geom_point(aes(y=R.EI))+
+  geom_point(aes(y=R.KP))+
+  geom_point(aes(y=R.MN))+
+  geom_point(aes(y=R.NH))+
+  geom_point(aes(y=R.OS))+
+  geom_point(aes(y=R.PP))+
+  geom_point(aes(y=R.PR))+
+  geom_point(aes(y=R.SF))+
+  geom_line(aes(y=R.BS))+
+  geom_line(aes(y=R.CC))+
+  geom_line(aes(y=R.CG))+
+  geom_line(aes(y=R.DS))+
+  geom_line(aes(y=R.EB))+
+  geom_line(aes(y=R.EI))+
+  geom_line(aes(y=R.KP))+
+  geom_line(aes(y=R.MN))+
+  geom_line(aes(y=R.NH))+
+  geom_line(aes(y=R.OS))+
+  geom_line(aes(y=R.PP))+
+  geom_line(aes(y=R.PR))+
+  geom_line(aes(y=R.SF))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Distance Subset B (2.01-2.5 km)")
+plot_grid(b.dist, ncol=1)
+
+
+
+
+
+
+
+
+
+c.dist.dat <- dat2 %>% 
+  filter(Distance.from.Mainland..log10. %in% (2.51:3.0))
+View(c.dist.dat)
+
+sum(BB);sum(BT);sum(DF);sum(IL);sum(IS);sum(MT);sum(WF)
+nsamp7=c(1:4)
+R.BB.8=rarefy(BB, nsamp7)
+R.BT.8=rarefy(BT, nsamp7)
+R.DF.8=rarefy(DF, nsamp7)
+R.IL.8=rarefy(IL, nsamp7)
+R.IS.8=rarefy(IS, nsamp7)
+R.MT.8=rarefy(MT, nsamp7)
+R.WF.8=rarefy(WF, nsamp7)
+
+c.dist.rich <- t(as.data.frame(rbind(R.BB.8,R.BT.8,R.DF.8,R.IL.8,R.IS.8,R.MT.8,R.WF.8,
+                                     nsamp7),
+                               row.names = c("BB","BT","DF","IL","IS","MT","WF",
+                                             "sample")))
+c.dist.rich.2 <- as.data.frame(c.dist.rich)
+View(c.dist.rich.2)
+
+c.dist <- ggplot(c.dist.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BB.8))+
+  geom_point(aes(y=R.BT.8))+
+  geom_point(aes(y=R.DF.8))+
+  geom_point(aes(y=R.IL.8))+
+  geom_point(aes(y=R.IS.8))+
+  geom_point(aes(y=R.MT.8))+
+  geom_point(aes(y=R.WF.8))+
+  geom_line(aes(y=R.BB.8))+
+  geom_line(aes(y=R.BT.8))+
+  geom_line(aes(y=R.DF.8))+
+  geom_line(aes(y=R.IL.8))+
+  geom_line(aes(y=R.IS.8))+
+  geom_line(aes(y=R.MT.8))+
+  geom_line(aes(y=R.WF.8))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Distance Subset C (2.51-3.0 km)")
+plot_grid(c.dist, ncol=1)
+
+
+
+
+
+
+
+
+
+
+d.dist.dat <- dat2 %>% 
+  filter(Distance.from.Mainland..log10. %in% (3.01:4.0))
+View(d.dist.dat)
+
+sum(BC);sum(CD);sum(EL);sum(KA);sum(KC);sum(LQ);sum(NV);sum(NW);sum(SG);sum(TB)
+nsamp2
+R.BC.2=rarefy(BC, nsamp2)
+R.CD.2=rarefy(CD, nsamp2)
+R.EL.2=rarefy(EL, nsamp2)
+R.KA.2=rarefy(KA, nsamp2)
+R.KC.2=rarefy(KC, nsamp2)
+R.LQ.2=rarefy(LQ, nsamp2)
+R.NV.2=rarefy(NV, nsamp2)
+R.NW.2=rarefy(NW, nsamp2)
+R.SG.2=rarefy(SG, nsamp2)
+R.TB.2=rarefy(TB, nsamp2)
+
+d.dist.rich <- t(as.data.frame(rbind(R.BC.2,R.CD.2,R.EL.2,R.KA.2,R.KC.2,R.LQ.2,R.NV.2,
+                                     R.NW.2,R.SG.2,R.TB.2,nsamp2),
+                               row.names = c("BC","CD","EL","KA","KC","LQ","NV","NW",
+                                             "SG","TB","sample")))
+d.dist.rich.2 <- as.data.frame(d.dist.rich)
+View(d.dist.rich.2)
+
+d.dist <- ggplot(d.dist.rich.2, aes(x=sample))+
+  geom_point(aes(y=R.BC.2))+
+  geom_point(aes(y=R.CD.2))+
+  geom_point(aes(y=R.EL.2))+
+  geom_point(aes(y=R.KA.2))+
+  geom_point(aes(y=R.KC.2))+
+  geom_point(aes(y=R.LQ.2))+
+  geom_point(aes(y=R.NV.2))+
+  geom_point(aes(y=R.NW.2))+
+  geom_point(aes(y=R.SG.2))+
+  geom_point(aes(y=R.TB.2))+
+  geom_line(aes(y=R.BC.2))+
+  geom_line(aes(y=R.CD.2))+
+  geom_line(aes(y=R.EL.2))+
+  geom_line(aes(y=R.KA.2))+
+  geom_line(aes(y=R.KC.2))+
+  geom_line(aes(y=R.LQ.2))+
+  geom_line(aes(y=R.NV.2))+
+  geom_line(aes(y=R.NW.2))+
+  geom_line(aes(y=R.SG.2))+
+  geom_line(aes(y=R.TB.2))+
+  theme_light()+
+  labs(x="Sample Size", y="Species Richness")+
+  ggtitle("Rarefaction Curves Island Distance Subset D (3.01-4.0 km)")
+plot_grid(d.dist, ncol=1)
+
+
+
+# Generate all rarefaction curve figures
+
+# All islands
+
+plot_grid(richness.raref, ncol=1)
+
+# Broken up by time since fire
+
+plot_grid(a.fire, ncol=1)
+plot_grid(b.fire, ncol=1)
+plot_grid(c.fire, ncol=1)
+plot_grid(d.fire, ncol=1)
+plot_grid(e.fire, ncol=1)
+
+# D and E exhibit rarefaction
+# B somewhat exhibits rarefaction
+
+
+# Broken up by island area
+
+plot_grid(a.area, ncol=1)
+plot_grid(b.area, ncol=1)
+plot_grid(c.area, ncol=1)
+plot_grid(d.area, ncol=1)
+plot_grid(e.area, ncol=1)
+
+# A and C somewhat exhibit rarefaction
+
+
+# Broken up by island distance to mainland
+
+plot_grid(a.dist, ncol=1)
+plot_grid(b.dist, ncol=1)
+plot_grid(c.dist, ncol=1)
+plot_grid(d.dist, ncol=1)
+
+# C and D somewhat exhibit rarefaction
+
+
+
+# Linear regressions between indices and island shite
+
+par(mfrow = c(1,3))
+
+lm.area <- lm(Species.Richness~Area..log10.)
+R.lm.area <- lm(Species.Richness~Area..log10., dat2)
+summary(R.lm.area)
+plot(Species.Richness~Area..log10.,
+     xlab = "Island Area (ha, log transformed)",
+     ylab = "Species Richness")
+abline(lm.area)
+
+
+
+lm.dist <- lm(Species.Richness~Distance.from.Mainland..log10.)
+R.lm.dist <- lm(Species.Richness~Distance.from.Mainland..log10., dat2)
+summary(R.lm.dist)
+plot(Species.Richness~Distance.from.Mainland..log10.,
+     xlab = "Distance to Mainland (km, log transformed)",
+     ylab = "Species Richness")
+abline(lm.dist)
+
+
+
+
+
+lm.fire <- lm(Species.Richness~Time.Since.Fire)
+R.lm.fire <- lm(Species.Richness~Time.Since.Fire, dat2)
+summary(R.lm.fire)
+plot(Species.Richness~Time.Since.Fire,
+     xlab = "Time Since Fire (years)",
+     ylab = "Species Richness")
+abline(lm.fire)
+
+
+save.image(file = "LLR.Data.RData")
+
+install.packages("Rcpp")
+library(Rcpp)
+install.packages("terra")
+library(terra)
+install.packages("AICcmodavg")
+library(AICcmodavg)
+
+
+model1 <- lm(Species.Richness~Area..log10. + Distance.from.Mainland..log10. + Time.Since.Fire, data=dat2)
+model2 <- lm(Species.Richness~Area..log10. + Distance.from.Mainland..log10., data=dat2)
+model3 <- lm(Species.Richness~Distance.from.Mainland..log10. + Time.Since.Fire, data=dat2)
+model4 <- lm(Species.Richness~Area..log10. + Time.Since.Fire, data=dat2)
+
+summary(model1)
+summary(model2)
+summary(model3)
+summary(model4)
+
+models <- list(model1, model2, model3, model4, R.lm.area, R.lm.dist, R.lm.fire, 
+               sp.dead.basal, sp.live.basal, sp.cwd)
+
+mod.names <- c('sp.rich+all', 'sp.rich+area+dist', 'sp.rich+dist+time', 
+               'sp.rich+area+time','sp.rich+area', 'sp.rich+dist', 'sp.rich+fire',
+               'sp.d.basal', 'sp.a.basal', 'sp.cwd')
+
+#calculate AIC of each model
+final.model <- aictab(cand.set = models, modnames = mod.names)
+final.model
+
+# model2 has the most power even though it's still not gr8
+# lol @ 45% of modelling weight
+
+model2
+model2.sum <- summary(model2)
+model2.sum
+
+
+
+
+
+# General figure generation for visualization of sp. richness interactions
+
+
+
+dat3 <- read.csv("island_diversity_values_2.csv")
+View(dat3)
+attach(dat3)
+
+
+
+
+par(mfrow = c(3,1))
+
+sp.dead.basal <- lm(Species.Richness~Basal.Area..dead., data = dat3)
+plot(Species.Richness~Basal.Area..dead.,
+     xlab = "Basal Area Volume (dead)",
+     ylab = "Species Richness")
+abline(sp.dead.basal)
+summary(sp.dead.basal)
+
+sp.live.basal <- lm(Species.Richness~Basal.Area..living., data = dat3)
+plot(Species.Richness~Basal.Area..living.,
+     xlab = "Basal Area Volume (living)",
+     ylab = "Species Richness")
+abline(sp.live.basal)
+summary(sp.live.basal)
+
+sp.cwd <- lm(Species.Richness~CWD.Volume, data = dat3)
+plot(Species.Richness~CWD.Volume,
+     xlab = "Coarse Woody Debris Volume",
+     ylab = "Species Richness")
+abline(sp.cwd)
+summary(sp.cwd)
+
+
+
+
+
+
+par(mfrow = c(3,1))
+
+sp.area <- lm(Species.Richness~Area..log10., data = dat3)
+plot(Species.Richness~Area..log10.,
+     xlab = "Island Area (m, log10)",
+     ylab = "Species Richness")
+abline(sp.area)
+
+sp.dist <- lm(Species.Richness~Distance.from.Mainland..log10., data = dat3)
+plot(Species.Richness~Distance.from.Mainland..log10.,
+     xlab = "Distance from Mainland (km, log10)",
+     ylab = "Species Richness")
+abline(sp.dist)
+
+sp.fire <- lm(Species.Richness~Time.Since.Fire, data = dat3)
+plot(Species.Richness~Time.Since.Fire,
+     xlab = "Time since fire (years)",
+     ylab = "Species Richness")
+abline(sp.fire)
