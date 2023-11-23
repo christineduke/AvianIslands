@@ -1,2 +1,2 @@
 # AvianIslands
-Effects of islands on avian diversity and dispersal
+Effects of islands and forest community regeneration from wildlife on avian diversity and dispersal.
